@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Liste des Auteurs</title>
+</head>
+<body>
+    <h1>Liste des Auteurs</h1>
+
+    {% if authors is not defined or authors is empty %}
+        <p>Aucun auteur n'est disponible.</p>
+    {% else %}
+        <!-- Afficher le nombre total d'auteurs -->
+        <p>Nombre total d'auteurs : {{ authors|length }}</p>
+
+        <!-- Calculer le nombre total de livres -->
+        {% set total_books = 0 %}
+        {% for author in authors %}
+            {% set total_books = total_books + author.nb_books %}
+        {% endfor %}
+        <p>Nombre total de livres de tous les auteurs : {{ total_books }}</p>
+
+        <!-- Tableau des auteurs -->
+        <table border="1">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Photo</th>
+                    <th>Nom d'utilisateur</th>
+                    <th>Email</th>
+                    <th>Nombre de livres</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for author in authors %}
+                    <tr>
+                        <td>{{ author.id }}</td>
+                        <td><img src="{{ author.picture }}" alt="{{ author.username }}" width="100"></td>
+                        <td>{{ author.username|upper }}</td> <!-- Convertir le nom en majuscules -->
+                        <td>{{ author.email }}</td>
+                        <td>{{ author.nb_books }}</td>
+                        <td><a href="{{ path('author_details', { 'id': author.id }) }}">Détails</a></td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% endif %}
+</body>
+</html>
